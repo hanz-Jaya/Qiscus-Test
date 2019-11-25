@@ -1,0 +1,51 @@
+<script src="jquery.min.js"></script>		
+<script>
+$(document).ready(function () {
+    $('#table_target tbody').empty();       
+    $.getJSON( "https://private-0e6b9-ganjarwidiatmansyah.apiary-mock.com/people?results=10&nat=en", function( json ) {
+        var data = json.results;
+        //alert(json["info"]["results"]);
+        for (var i = 0; i < json["info"]["results"]; i++) {
+            var dob_date = new Date(data[i]["dob"]["date"]);
+            
+            tr = $('<tr/>');
+                tr.append("<td>" + parseInt(i+1) + "</td>");
+                tr.append("<td><a href=" + data[i]["picture"]["large"] + " target='_blank'> <img src=" + data[i]["picture"]["thumbnail"] + "></a></td>");
+                tr.append("<td class='ucwords'>" + data[i]["name"]["first"] +" "+ data[i]["name"]["last"] + "</td>");
+                tr.append("<td>" + dob_date + "</td>");
+                tr.append("<td>" + data[i]["location"]["timezone"]["offset"] + "</td>");
+                tr.append("<td class='ucwords'>" + data[i]["gender"] + "</td>");
+                $('#table_target tbody').append(tr);            
+        }
+
+    });
+});
+</script>
+<table width="900px" id="table_target">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Images</th>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Time</th>
+            <th>Gander</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<style>
+#table_target   { border-collapse: collapse; border: 1px solid grey; font-family: Arial, Helvetica, sans-serif; }
+#table_target th { background-color: aliceblue;}
+#table_target th,td { border: 1px solid grey; padding: 2px; text-align: center; }
+.ucwords    { text-transform: capitalize;}
+</style>
