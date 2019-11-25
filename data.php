@@ -17,7 +17,6 @@ function format_tanggal($tanggal){
     $tanggal_view=$ex_tanggal[2];
     $bulan_view=$bulan_arr[(int)$ex_tanggal[1]];
     $tahun_view=$ex_tanggal[0];
-
     return $format_tanggal_view = $tanggal_view." ".$bulan_view." ".$tahun_view;
 }
 
@@ -38,7 +37,13 @@ function format_tanggal($tanggal){
             for($a=0;$a<$jumlah_data;$a++):
                 $dob        = substr($decode["results"][$a]["dob"]["date"],0,10);
                 $time       = $decode["results"][$a]["location"]["timezone"]["offset"];
-                $timeview   = $time;
+
+                $offset = $time;
+                list($hours, $minutes) = explode(':', $offset);
+                $seconds = $hours * 60 * 60 + $minutes * 60;
+                $tz = timezone_name_from_abbr('', $seconds, 1);
+                if($tz === false) $tz = timezone_name_from_abbr('', $seconds, 0);
+                $timeview   = $tz . ': ' . date('r');             
         ?>
         <tr>
             <td><?php echo $a+1; ?></td>
